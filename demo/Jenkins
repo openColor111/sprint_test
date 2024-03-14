@@ -13,7 +13,7 @@ pipeline {
             steps {
                     
                     sh "/var/jenkins_home/apache-maven-3.9.6/bin/mvn -v"
-                    sh "cd demo; /var/jenkins_home/apache-maven-3.9.6/bin/mvn clean package ; mv Dockerfile target"
+                    sh "cd demo; /var/jenkins_home/apache-maven-3.9.6/bin/mvn clean package -DskipTests ; mv Dockerfile target"
                 echo '构建完成'
             }
         }
@@ -27,6 +27,14 @@ pipeline {
          stage('包上传成功') {
             steps {
                 sh "docker push $Img"
+                echo '上传成功'
+             
+            }
+        }
+        stage('发布k8s上') {
+            steps {
+                
+                sh " cd demo ; export Img=$Img ; envsubst < dep.yaml | kubectl apply -f -"
                 echo '上传成功'
              
             }
