@@ -1,0 +1,1 @@
+docker run -itd --name jenkins -p 8080:8080 -p 50000:50000 --privileged=true -v /root/.kube/config:/root/.kube/config -v /opt/cicd/jenkins/:/var/jenkins_home -v  /root/.docker/config.json:/root/.docker/config.json -v /var/run/docker.sock:/var/run/docker.sock  liu365/jenkins:docker-kube
