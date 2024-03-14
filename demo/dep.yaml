@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sprint-web
+spec:
+  selector:
+    matchLabels:
+      app: sprint
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: sprint
+    spec:
+      containers:
+      - name: sprint
+        image: $Img
+        ports:
+        - containerPort: 8080
