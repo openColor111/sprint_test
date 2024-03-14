@@ -1,0 +1,35 @@
+pipeline {
+    agent any
+   
+    stages {
+        stage('拉取代码') {
+            steps {
+               git 'https://github.com/openColor111/sprint_test.git'
+                echo '拉取成功'
+                sh "pwd; ls -l"
+            }
+        }
+        stage('执行构建') {
+            steps {
+                    
+                    sh "/var/jenkins_home/apache-maven-3.9.6/bin/mvn -v"
+                    sh "cd demo; /var/jenkins_home/apache-maven-3.9.6/bin/mvn clean package ; mv Dockerfile target"
+                echo '构建完成'
+            }
+        }
+        stage('把jar包构建为docker镜像并运行') {
+            steps {
+                sh "cd demo/target/ ; docker build . -t $Img"
+                echo '运行成功'
+                sleep 10
+            }
+        }
+         stage('包上传成功') {
+            steps {
+                sh "docker push $Img"
+                echo '上传成功'
+             
+            }
+        }
+    }
+}
